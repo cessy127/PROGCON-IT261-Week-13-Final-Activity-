@@ -1,244 +1,170 @@
 # PROGCON-IT261-Week-13-Final-Activity
+Function Main
+    Declare String Array board[10]
+    Declare Integer i, r, humanMove, compChoice
+    Declare String currentPlayer, winner
+    Declare Boolean gameOver, validMove
 
-<?xml version="1.0"?>
-<flowgorithm fileversion="4.2">
-    <attributes>
-        <attribute name="name" value="tictactoe_v2"/>
-        <attribute name="authors" value="USER"/>
-        <attribute name="about" value=""/>
-        <attribute name="saved" value="2026-10-12 10:30:29 AM"/>
-        <attribute name="created" value="VVNFUjtERVNLVE9QLUNFVVJQOTM7MjAyNi0xMC0wMzsxMTowOTowMyBQTTsyNjY1"/>
-        <attribute name="edited" value="VVNFUjtERVNLVE9QLUNFVVJQOTM7MjAyNi0xMC0wNTsxMDo1MzozOSBBTTsyOzI3Njg="/>
-        <attribute name="edited" value="UmFtcztDT01MQUIzMTQwQzMyOzIwMjYtMTAtMTI7MTA6MzA6MjkgQU07MTsyNTY3"/>
-    </attributes>
+    For i = 1 to 9
+        Assign board[i] = " "
+    End
 
-    <function name="Main" type="None" variable="">
-        <parameters/>
-        <body>
-            <declare name="board" type="String" array="True" size="10"/>
-            <declare name="i, r, humanMove, compChoice" type="Integer" array="False" size=""/>
-            <declare name="currentPlayer, winner" type="String" array="False" size=""/>
-            <declare name="gameOver, validMove" type="Boolean" array="False" size=""/>
+    Assign gameOver = False
+    Assign winner = "None"
 
-            <for variable="i" start="1" end="9" direction="inc" step="1">
-                <assign variable="board[i]" expression="&quot; &quot;"/>
-            </for>
+    Assign r = Random(2)
 
-            <assign variable="gameOver" expression="False"/>
-            <assign variable="winner" expression="&quot;None&quot;"/>
-            <assign variable="r" expression="random(2)"/>
+    If r == 0
+        Assign currentPlayer = "O"
+    Else
+        Assign currentPlayer = "X"
+    End
 
-            <if expression="r == 0">
-                <then>
-                    <assign variable="currentPlayer" expression="&quot;O&quot;"/>
-                </then>
-                <else>
-                    <assign variable="currentPlayer" expression="&quot;X&quot;"/>
-                </else>
-            </if>
+    While gameOver == False
+        Call DisplayBoard(board)
 
-            <while expression="gameOver == False">
-                <call expression="DisplayBoard(board)"/>
+        If currentPlayer == "O"
+            Assign validMove = False
 
-                <if expression="currentPlayer == &quot;O&quot;">
-                    <then>
-                        <assign variable="validMove" expression="False"/>
+            While validMove == False
+                Output "Enter your move (1-9):"
+                Input humanMove
 
-                        <while expression="validMove == False">
-                            <output expression="&quot;Enter your move (1-9):&quot;" newline="True"/>
-                            <input variable="humanMove"/>
+                If humanMove >= 1 AND humanMove <= 9
+                    If board[humanMove] == " "
+                        Assign validMove = True
+                    Else
+                        Output "Space occupied! Try again."
+                    End
+                Else
+                    Output "Invalid choice! Enter 1-9."
+                End
+            End
 
-                            <if expression="humanMove &gt;= 1 AND humanMove &lt;= 9">
-                                <then>
-                                    <if expression="board[humanMove] == &quot; &quot;">
-                                        <then>
-                                            <assign variable="validMove" expression="True"/>
-                                        </then>
-                                        <else>
-                                            <output expression="&quot;Space occupied! Try again.&quot;" newline="True"/>
-                                        </else>
-                                    </if>
-                                </then>
-                                <else>
-                                    <output expression="&quot;Invalid choice! Enter 1-9.&quot;" newline="True"/>
-                                </else>
-                            </if>
-                        </while>
+            Assign board[humanMove] = "O"
+        Else
+            Output "Computer's turn..."
+            Assign compChoice = GetComputerMove(board)
+            Assign board[compChoice] = "X"
+        End
 
-                        <assign variable="board[humanMove]" expression="&quot;O&quot;"/>
-                    </then>
+        Assign winner = CheckWinner(board)
 
-                    <else>
-                        <output expression="&quot;Computer's turn...&quot;" newline="True"/>
-                        <assign variable="compChoice" expression="GetComputerMove(board)"/>
-                        <assign variable="board[compChoice]" expression="&quot;X&quot;"/>
-                    </else>
-                </if>
+        If winner != "None"
+            Assign gameOver = True
+        Else
+            If currentPlayer == "O"
+                Assign currentPlayer = "X"
+            Else
+                Assign currentPlayer = "O"
+            End
+        End
+    End
 
-                <assign variable="winner" expression="CheckWinner(board)"/>
+    Call DisplayBoard(board)
 
-                <if expression="winner != &quot;None&quot;">
-                    <then>
-                        <assign variable="gameOver" expression="True"/>
-                    </then>
-                    <else>
-                        <if expression="currentPlayer == &quot;O&quot;">
-                            <then>
-                                <assign variable="currentPlayer" expression="&quot;X&quot;"/>
-                            </then>
-                            <else>
-                                <assign variable="currentPlayer" expression="&quot;O&quot;"/>
-                            </else>
-                        </if>
-                    </else>
-                </if>
-            </while>
+    If winner == "O"
+        Output "You win!"
+    Else
+        If winner == "X"
+            Output "Computer wins!"
+        Else
+            Output "It's a draw!"
+        End
+    End
+End
 
-            <call expression="DisplayBoard(board)"/>
 
-            <if expression="winner == &quot;O&quot;">
-                <then>
-                    <output expression="&quot;You win!&quot;" newline="True"/>
-                </then>
-                <else>
-                    <if expression="winner == &quot;X&quot;">
-                        <then>
-                            <output expression="&quot;Computer wins!&quot;" newline="True"/>
-                        </then>
-                        <else>
-                            <output expression="&quot;It's a draw!&quot;" newline="True"/>
-                        </else>
-                    </if>
-                </else>
-            </if>
-        </body>
-    </function>
+Function CheckWinner (String Array board)
+    Declare String result
+    Declare Integer filledCount, k
 
-    <function name="CheckWinner" type="String" variable="result">
-        <parameters>
-            <parameter name="board" type="String" array="True"/>
-        </parameters>
-        <body>
-            <declare name="result" type="String" array="False" size=""/>
-            <declare name="filledCount, k" type="Integer" array="False" size=""/>
+    Assign result = "None"
+    Assign filledCount = 0
 
-            <assign variable="result" expression="&quot;None&quot;"/>
-            <assign variable="filledCount" expression="0"/>
+    If board[1] != " " AND board[1] == board[2] AND board[2] == board[3]
+        Assign result = board[1]
+    End
 
-            <if expression="board[1] != &quot; &quot; AND board[1] == board[2] AND board[2] == board[3]">
-                <then>
-                    <assign variable="result" expression="board[1]"/>
-                </then>
-                <else/>
-            </if>
+    If result == "None"
+        If board[4] != " " AND board[4] == board[5] AND board[5] == board[6]
+            Assign result = board[4]
+        End
+    End
 
-            <if expression="board[4] != &quot; &quot; AND board[4] == board[5] AND board[5] == board[6]">
-                <then>
-                    <assign variable="result" expression="board[4]"/>
-                </then>
-                <else/>
-            </if>
+    If result == "None"
+        If board[7] != " " AND board[7] == board[8] AND board[8] == board[9]
+            Assign result = board[7]
+        End
+    End
 
-            <if expression="board[7] != &quot; &quot; AND board[7] == board[8] AND board[8] == board[9]">
-                <then>
-                    <assign variable="result" expression="board[7]"/>
-                </then>
-                <else/>
-            </if>
+    If result == "None"
+        If board[1] != " " AND board[1] == board[4] AND board[4] == board[7]
+            Assign result = board[1]
+        End
+    End
 
-            <if expression="board[1] != &quot; &quot; AND board[1] == board[4] AND board[4] == board[7]">
-                <then>
-                    <assign variable="result" expression="board[1]"/>
-                </then>
-                <else/>
-            </if>
+    If result == "None"
+        If board[2] != " " AND board[2] == board[5] AND board[5] == board[8]
+            Assign result = board[2]
+        End
+    End
 
-            <if expression="board[2] != &quot; &quot; AND board[2] == board[5] AND board[5] == board[8]">
-                <then>
-                    <assign variable="result" expression="board[2]"/>
-                </then>
-                <else/>
-            </if>
+    If result == "None"
+        If board[3] != " " AND board[3] == board[6] AND board[6] == board[9]
+            Assign result = board[3]
+        End
+    End
 
-            <if expression="board[3] != &quot; &quot; AND board[3] == board[6] AND board[6] == board[9]">
-                <then>
-                    <assign variable="result" expression="board[3]"/>
-                </then>
-                <else/>
-            </if>
+    If result == "None"
+        If board[1] != " " AND board[1] == board[5] AND board[5] == board[9]
+            Assign result = board[1]
+        End
+    End
 
-            <if expression="board[1] != &quot; &quot; AND board[1] == board[5] AND board[5] == board[9]">
-                <then>
-                    <assign variable="result" expression="board[1]"/>
-                </then>
-                <else/>
-            </if>
+    If result == "None"
+        If board[3] != " " AND board[3] == board[5] AND board[5] == board[7]
+            Assign result = board[3]
+        End
+    End
 
-            <if expression="board[3] != &quot; &quot; AND board[3] == board[5] AND board[5] == board[7]">
-                <then>
-                    <assign variable="result" expression="board[3]"/>
-                </then>
-                <else/>
-            </if>
+    For k = 1 to 9
+        If board[k] != " "
+            Assign filledCount = filledCount + 1
+        End
+    End
 
-            <for variable="k" start="1" end="9" direction="inc" step="1">
-                <if expression="board[k] != &quot; &quot;">
-                    <then>
-                        <assign variable="filledCount" expression="filledCount + 1"/>
-                    </then>
-                    <else/>
-                </if>
-            </for>
+    If result == "None" AND filledCount == 9
+        Assign result = "Draw"
+    End
 
-            <if expression="result == &quot;None&quot; AND filledCount == 9">
-                <then>
-                    <assign variable="result" expression="&quot;Draw&quot;"/>
-                </then>
-                <else/>
-            </if>
-        </body>
-    </function>
+    Return result
+End
 
-    <function name="DisplayBoard" type="None" variable="">
-        <parameters>
-            <parameter name="board" type="String" array="True"/>
-        </parameters>
-        <body>
-            <output expression="&quot; &quot; &amp; board[1] &amp; &quot; | &quot; &amp; board[2] &amp; &quot; | &quot; &amp; board[3]" newline="True"/>
-            <output expression="&quot;-----------&quot;" newline="True"/>
-            <output expression="&quot; &quot; &amp; board[4] &amp; &quot; | &quot; &amp; board[5] &amp; &quot; | &quot; &amp; board[6]" newline="True"/>
-            <output expression="&quot;-----------&quot;" newline="True"/>
-            <output expression="&quot; &quot; &amp; board[7] &amp; &quot; | &quot; &amp; board[8] &amp; &quot; | &quot; &amp; board[9]" newline="True"/>
-        </body>
-    </function>
 
-    <function name="GetComputerMove" type="Integer" variable="compMove">
-        <parameters>
-            <parameter name="board" type="String" array="True"/>
-        </parameters>
-        <body>
-            <declare name="compMove" type="Integer" array="False" size=""/>
-            <declare name="valid" type="Boolean" array="False" size=""/>
+Function DisplayBoard (String Array board)
+    Output board[1] & " | " & board[2] & " | " & board[3]
+    Output "-+-+-"
+    Output board[4] & " | " & board[5] & " | " & board[6]
+    Output "-+-+-"
+    Output board[7] & " | " & board[8] & " | " & board[9]
+End
 
-            <assign variable="valid" expression="False"/>
 
-            <while expression="valid == False">
-                <assign variable="compMove" expression="Random(9) + 1"/>
+Function GetComputerMove (String Array board)
+    Declare Integer compMove
+    Declare Boolean valid
 
-                <if expression="compMove &gt;= 1 AND compMove &lt;= 9">
-                    <then>
-                        <if expression="board[compMove] == &quot; &quot;">
-                            <then>
-                                <assign variable="valid" expression="True"/>
-                            </then>
-                            <else>
-                                <assign variable="valid" expression="False"/>
-                            </else>
-                        </if>
-                    </then>
-                    <else/>
-                </if>
-            </while>
-        </body>
-    </function>
+    Assign valid = False
+
+    While valid == False
+        Assign compMove = Random(9) + 1
+
+        If board[compMove] == " "
+            Assign valid = True
+        End
+    End
+
+    Return compMove
+End
 </flowgorithm>
