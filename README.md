@@ -1,108 +1,207 @@
 # PROGCON-IT261-Week-13-Final-Activity
-import random
-def checkWinner(board):
-    result = "None"
-    filledCount = 0
-if board[1] != " " and board[1] == board[2] and board[2] == board[3]:
-    result = board[1]
-
-if board[4] != " " and board[4] == board[5] and board[5] == board[6]:
-    result = board[4]
-
-if board[7] != " " and board[7] == board[8] and board[8] == board[9]:
-        result = board[7]
-    if board[1] != " " and board[1] == board[4] and board[4] == board[7]:
-        result = board[1]
-    if board[2] != " " and board[2] == board[5] and board[5] == board[8]:
-        result = board[2]
-    if board[3] != " " and board[3] == board[6] and board[6] == board[9]:
-        result = board[3]
-    if board[1] != " " and board[1] == board[5] and board[5] == board[9]:
-        result = board[1]
-    if board[3] != " " and board[3] == board[5] and board[5] == board[7]:
-        result = board[3]
-    for k in range(1, 9 + 1, 1):
-        if board[k] != " ":
-            filledCount = filledCount + 1
-    if result == "None" and filledCount == 9:
-        result = "Draw"
-
-    return result
-
-
-
-def displayBoard(board):
-    print(board[1] + " | " + board[2] + " | " + board[3])
-    print("-+-+-")
-    print(board[4] + " | " + board[5] + " | " + board[6])
-    print("-+-+-")
-    print(board[7] + " | " + board[8] + " | " + board[9])
-
-
-
-def getComputerMove(board):
-    valid = False
-    while valid == False:
-        compMove = int(random.random() * 9) + 1
-        if board[compMove] == " ":
-            valid = True
-        else:
-            valid = False
-
-    return compMove
-
-
-
-# Main
-random.seed()   #Prepare random number generator
-
-
-
-board = [""] * (10)
-
-
-
-for i in range(1, 9 + 1, 1):
-    board[i] = " "
-gameOver = False
-winner = "None"
-r = int(random.random() * 2)
-if r == 0:
-    currentPlayer = "O"
-else:
-    currentPlayer = "X"
-while gameOver == False:
-    displayBoard(board)
-    if currentPlayer == "O":
-        validMove = False
-        while validMove == False:
-            print("Enter your move (1-9):")
-            humanMove = int(input())
-            if humanMove >= 1 and humanMove <= 9:
-                if board[humanMove] == " ":
-                    validMove = True
-                else:
-                    print("Space occupied! Try again.")
-            else:
-                print("Invalid choice! Enter 1-9.")
-        board[humanMove] = "O"
-    else:
-        print("Computer's turn...")
-        compChoice = getComputerMove(board)
-        board[compChoice] = "X"
-    winner = checkWinner(board)
-    if winner != "None":
-        gameOver = True
-    else:
-        if currentPlayer == "O":
-            currentPlayer = "X"
-        else:
-            currentPlayer = "O"
-displayBoard(board)
-if winner == "O":
-    print("You win!")
-else:
-    if winner == "X":
-        print("Computer wins!")
-    else:
-        print("It's a draw!")
+<?xml version="1.0"?>
+<flowgorithm fileversion="4.2">
+<attributes>
+<attribute name="name" value="tictactoe_v2"/>
+<attribute name="authors" value="USER"/>
+<attribute name="about" value=""/>
+<attribute name="saved" value="2026-10-12 10:30:29 AM"/>
+<attribute name="created" value="VVNFUjtERVNLVE9QLUNFVVJQOTM7MjAyNi0xMC0wMzsxMTowOTowMyBQTTsyNjY1"/>
+<attribute name="edited" value="VVNFUjtERVNLVE9QLUNFVVJQOTM7MjAyNi0xMC0wNTsxMDo1MzozOSBBTTsyOzI3Njg="/>
+<attribute name="edited" value="UmFtcztDT01MQUIzMTQwQzMyOzIwMjYtMTAtMTI7MTA6MzA6MjkgQU07MTsyNTY3"/>
+</attributes>
+<function name="Main" type="None" variable="">
+<parameters/>
+<body>
+<declare name="board" type="String" array="True" size="10"/>
+<declare name="i, r, humanMove, compChoice" type="Integer" array="False" size=""/>
+<declare name="currentPlayer, winner" type="String" array="False" size=""/>
+<declare name="gameOver, validMove" type="Boolean" array="False" size=""/>
+<for variable="i" start="1" end="9" direction="inc" step="1">
+<assign variable="board[i]" expression="&quot; &quot;"/>
+</for>
+<assign variable="gameOver" expression="False"/>
+<assign variable="winner" expression="&quot;None&quot;"/>
+<assign variable="r" expression="random(2)"/>
+<if expression="r == 0">
+<then>
+<assign variable="currentPlayer" expression="&quot;O&quot;"/>
+</then>
+<else>
+<assign variable="currentPlayer" expression="&quot;X&quot;"/>
+</else>
+</if>
+<while expression="gameOver == False">
+<call expression="DisplayBoard(board)"/>
+<if expression="currentPlayer == &quot;O&quot;">
+<then>
+<assign variable="validMove" expression="False"/>
+<while expression="validMove == False">
+<output expression="&quot;Enter your move (1-9):&quot;" newline="True"/>
+<input variable="humanMove"/>
+<if expression="humanMove &gt;= 1 AND humanMove &lt;= 9">
+<then>
+<if expression="board[humanMove] == &quot; &quot;">
+<then>
+<assign variable="validMove" expression="True"/>
+</then>
+<else>
+<output expression="&quot;Space occupied! Try again.&quot;" newline="True"/>
+</else>
+</if>
+</then>
+<else>
+<output expression="&quot;Invalid choice! Enter 1-9.&quot;" newline="True"/>
+</else>
+</if>
+</while>
+<assign variable="board[humanMove]" expression="&quot;O&quot;"/>
+</then>
+<else>
+<output expression="&quot;Computer's turn...&quot;" newline="True"/>
+<assign variable="compChoice" expression="GetComputerMove(board)"/>
+<assign variable="board[compChoice]" expression="&quot;X&quot;"/>
+</else>
+</if>
+<assign variable="winner" expression="CheckWinner(board)"/>
+<if expression="winner != &quot;None&quot;">
+<then>
+<assign variable="gameOver" expression="True"/>
+</then>
+<else>
+<if expression="currentPlayer == &quot;O&quot;">
+<then>
+<assign variable="currentPlayer" expression="&quot;X&quot;"/>
+</then>
+<else>
+<assign variable="currentPlayer" expression="&quot;O&quot;"/>
+</else>
+</if>
+</else>
+</if>
+</while>
+<call expression="DisplayBoard(board)"/>
+<if expression="winner == &quot;O&quot;">
+<then>
+<output expression="&quot;You win!&quot;" newline="True"/>
+</then>
+<else>
+<if expression="winner == &quot;X&quot;">
+<then>
+<output expression="&quot;Computer wins!&quot;" newline="True"/>
+</then>
+<else>
+<output expression="&quot;It's a draw!&quot;" newline="True"/>
+</else>
+</if>
+</else>
+</if>
+</body>
+</function>
+<function name="CheckWinner" type="String" variable="result">
+<parameters>
+<parameter name="board" type="String" array="True"/>
+</parameters>
+<body>
+<declare name="result" type="String" array="False" size=""/>
+<declare name="filledCount, k" type="Integer" array="False" size=""/>
+<assign variable="result" expression="&quot;None&quot;"/>
+<assign variable="filledCount" expression="0"/>
+<if expression="board[1] != &quot; &quot; AND board[1] == board[2] AND board[2] == board[3]">
+<then>
+<assign variable="result" expression="board[1]"/>
+</then>
+<else/>
+</if>
+<if expression="board[4] != &quot; &quot; AND board[4] == board[5] AND board[5] == board[6]">
+<then>
+<assign variable="result" expression="board[4]"/>
+</then>
+<else/>
+</if>
+<if expression="board[7] != &quot; &quot; AND board[7] == board[8] AND board[8] == board[9]">
+<then>
+<assign variable="result" expression="board[7]"/>
+</then>
+<else/>
+</if>
+<if expression="board[1] != &quot; &quot; AND board[1] == board[4] AND board[4] == board[7]">
+<then>
+<assign variable="result" expression="board[1]"/>
+</then>
+<else/>
+</if>
+<if expression="board[2] != &quot; &quot; AND board[2] == board[5] AND board[5] == board[8]">
+<then>
+<assign variable="result" expression="board[2]"/>
+</then>
+<else/>
+</if>
+<if expression="board[3] != &quot; &quot; AND board[3] == board[6] AND board[6] == board[9]">
+<then>
+<assign variable="result" expression="board[3]"/>
+</then>
+<else/>
+</if>
+<if expression="board[1] != &quot; &quot; AND board[1] == board[5] AND board[5] == board[9]">
+<then>
+<assign variable="result" expression="board[1]"/>
+</then>
+<else/>
+</if>
+<if expression="board[3] != &quot; &quot; AND board[3] == board[5] AND board[5] == board[7]">
+<then>
+<assign variable="result" expression="board[3]"/>
+</then>
+<else/>
+</if>
+<for variable="k" start="1" end="9" direction="inc" step="1">
+<if expression="board[k] != &quot; &quot;">
+<then>
+<assign variable="filledCount" expression="filledCount + 1"/>
+</then>
+<else/>
+</if>
+</for>
+<if expression="result == &quot;None&quot; AND filledCount == 9">
+<then>
+<assign variable="result" expression="&quot;Draw&quot;"/>
+</then>
+<else/>
+</if>
+</body>
+</function>
+<function name="DisplayBoard" type="None" variable="">
+<parameters>
+<parameter name="board" type="String" array="True"/>
+</parameters>
+<body>
+<output expression="board[1] &amp; &quot; | &quot; &amp; board[2] &amp; &quot; | &quot; &amp; board[3]" newline="True"/>
+<output expression="&quot;-+-+-&quot;" newline="True"/>
+<output expression="board[4] &amp; &quot; | &quot; &amp; board[5] &amp; &quot; | &quot; &amp; board[6]" newline="True"/>
+<output expression="&quot;-+-+-&quot;" newline="True"/>
+<output expression="board[7] &amp; &quot; | &quot; &amp; board[8] &amp; &quot; | &quot; &amp; board[9]" newline="True"/>
+</body>
+</function>
+<function name="GetComputerMove" type="Integer" variable="compMove">
+<parameters>
+<parameter name="board" type="String" array="True"/>
+</parameters>
+<body>
+<declare name="compMove" type="Integer" array="False" size=""/>
+<declare name="valid" type="Boolean" array="False" size=""/>
+<assign variable="valid" expression="False"/>
+<while expression="valid == False">
+<assign variable="compMove" expression="Random(9) + 1"/>
+<if expression="board[compMove] == &quot; &quot;">
+<then>
+<assign variable="valid" expression="True"/>
+</then>
+<else>
+<assign variable="valid" expression="False"/>
+</else>
+</if>
+</while>
+</body>
+</function>
+</flowgorithm>
